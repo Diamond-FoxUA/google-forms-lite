@@ -5,16 +5,34 @@ import "dotenv/config";
 
 import { errorHandler } from "./middleware/errorHandler.js";
 import { notFoundHandler } from "./middleware/notFoundHandler.js";
+import { formRouter } from "./routes/formRoutes.js";
+import { responseRouter } from "./routes/responseRouter.js";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+const isProd = process.env.NODE_ENV === "production";
+
 app.use(express.json());
-app.use(cors());
-app.use(helmet());
+app.use(
+  cors({
+    origin: isProd ? [process.env.FRONTEND_URL || ""] : "*",
+    methods: ["GET", "POST", "DELETE", "PATCH"],
+    allowedHeaders: ["Content-Type"],
+  }),
+);
+
+app.use(
+  helmet({
+    crossOriginResourcePolicy: { policy: "cross-origin" },
+    contentSecurityPolicy: false,
+  }),
+);
+
+app.use("/api", formRouter);
+app.use("/api", responseRouter);
 
 app.use(notFoundHandler);
-
 app.use(errorHandler);
 
 app.listen(PORT, () => {
