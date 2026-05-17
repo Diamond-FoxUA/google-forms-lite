@@ -1,0 +1,62 @@
+datasource db {
+  provider = "postgresql"
+  relationMode = "foreignKeys"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum QuestionType {
+  TEXT
+  MULTIPLE_CHOICE
+  CHECKBOX
+  DATE
+}
+
+model Form {
+  id String @id @default(cuid())
+  title String @db.VarChar(255)
+  description String? @db.Text
+  createdAt DateTime @default(now()) @map("created_at")
+  questions Question[]
+  response Response[]
+
+  @@map("forms")
+}
+
+model Question {
+  id String @id @default(cuid())
+  text String @db.Text
+  type QuestionType
+  options Json? @default("[]")
+
+  formId String @map("form_id")
+  form Form @relation(fields: [formId], references: [id], onDelete: Cascade)
+
+  answers Answer[]
+
+  @@map("questions")
+}
+
+model Response {
+  id String @id @default(cuid())
+  formId String @map("form_id")
+  submittedAt DateTime @default(now()) @map("submitted_at")
+  form Form @relation(fields: [formId], references: [id], onDelete: Cascade)
+  answers Answer[]
+
+  @@map("responses")
+}
+
+model Answer {
+  id String @id @default(cuid())
+  responseId String @map("response_id")
+  questionId String @map("question_id")
+  value String @db.Text
+
+  response Response @relation(fields: [responseId], references: [id], onDelete: Cascade)
+  question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@map("answers")
+}
