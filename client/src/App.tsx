@@ -5,7 +5,7 @@ import Homepage from "./pages/Homepage";
 import FormBuilder from "./pages/FormBuilder";
 import FormFiller from "./pages/FormFiller";
 import FormResponses from "./pages/FormResponses";
-import NotFound from "./pages/notFound";
+import NotFound from "./pages/NotFound";
 
 
 const router = createBrowserRouter([
