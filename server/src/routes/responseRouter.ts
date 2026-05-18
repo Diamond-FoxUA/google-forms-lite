@@ -6,7 +6,7 @@ import {
 import { validate } from "../middleware/validate.js";
 import { submitResponseSchema } from "../validations/formValidation.js";
 
-export const responseRouter = Router();
+export const responseRouter = Router({ mergeParams: true });
 
-responseRouter.get("/:id", getFormResponses);
-responseRouter.post("/:id", validate(submitResponseSchema), submitFormResponses);
+responseRouter.get("/", getFormResponses);
+responseRouter.post("/", validate(submitResponseSchema), submitFormResponses);
