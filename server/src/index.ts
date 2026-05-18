@@ -29,8 +29,8 @@ app.use(
   }),
 );
 
-app.use("/api", formRouter);
-app.use("/api", responseRouter);
+app.use("/api/forms", formRouter);
+app.use("/api/responses", responseRouter);
 
 app.use(notFoundHandler);
 app.use(errorHandler);
