@@ -4,6 +4,10 @@ import createHttpError from "http-errors";
 
 export const getFormResponses = async (req: Request, res: Response) => {
   const { id } = req.params;
+  
+  if (typeof id !== "string") {
+    throw createHttpError(400, "Invalid form ID.");
+  }
 
   const formExists = await prisma.form.findUnique({
     where: { id },
@@ -29,6 +33,11 @@ interface IncomingAnswer {
 
 export const submitFormResponses = async (req: Request, res: Response) => {
   const formId = req.params.id;
+
+  if (typeof formId !== "string") {
+    throw createHttpError(400, "Invalid form ID.");
+  }
+
   const { answers } = req.body as { answers: IncomingAnswer[] };
 
   const formExists = await prisma.form.findUnique({

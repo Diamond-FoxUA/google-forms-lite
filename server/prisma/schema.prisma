@@ -29,7 +29,7 @@ model Question {
   id String @id @default(cuid())
   text String @db.Text
   type QuestionType
-  options Json? @default("[]")
+  options  Json? @default("[]")
 
   formId String @map("form_id")
   form Form @relation(fields: [formId], references: [id], onDelete: Cascade)
@@ -53,7 +53,7 @@ model Answer {
   id String @id @default(cuid())
   responseId String @map("response_id")
   questionId String @map("question_id")
-  value String @db.Text
+  value Json @db.JsonB
 
   response Response @relation(fields: [responseId], references: [id], onDelete: Cascade)
   question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)

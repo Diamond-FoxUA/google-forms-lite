@@ -14,7 +14,9 @@
     "dev": "concurrently \"npm run start:client\" \"npm run start:server\"",
     "build:client": "npm run build --workspace=client",
     "build:server": "npm run build --workspace=server",
-    "build": "npm run build:server && npm run build client"
+    "build": "npm run build:server && npm run build:client",
+    "db:generate": "npm run db:generate --workspace=server",
+    "db:migrate": "npm run db:migrate --workspace=server"
   },
   "devDependencies": {
     "concurrently": "^8.2.2"

@@ -13,6 +13,11 @@ export const getAllForms = async (req: Request, res: Response) => {
 
 export const getFormById = async (req: Request, res: Response) => {
   const { id } = req.params;
+
+  if (typeof id !== "string") {
+    throw createHttpError(400, "Invalid form ID.");
+  }
+
   const form = await prisma.form.findUnique({
     where: { id },
     include: { questions: true },
@@ -59,6 +64,11 @@ export const createForm = async (req: Request, res: Response) => {
 
 export const deleteForm = async (req: Request, res: Response) => {
   const { id } = req.params;
+
+  if (typeof id !== "string") {
+    throw createHttpError(400, "Invalid form ID.");
+  }
+
   await prisma.form.delete({
     where: { id },
   });
