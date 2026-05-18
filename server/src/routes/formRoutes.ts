@@ -10,7 +10,7 @@ import {
 
 export const formRouter = Router();
 
-formRouter.get("/forms", getAllForms);
-formRouter.get("/form/:id", getFormById);
-formRouter.post("/forms", createForm);
-formRouter.delete("/form/:id", deleteForm);
+formRouter.get("/", getAllForms);
+formRouter.post("/", createForm);
+formRouter.get("/:id", getFormById);
+formRouter.delete("/:id", deleteForm);
