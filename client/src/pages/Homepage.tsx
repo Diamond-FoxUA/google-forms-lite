@@ -52,12 +52,12 @@ export default function Homepage() {
 
       <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {forms.map((form) => (
-          <li key={form.id} className="bg-slate-100 p-6 rounded-xl flex flex-col justify-between gap-4">
-            <div>
+          <li key={form.id} className="bg-slate-100 p-6 rounded-xl flex flex-col h-full justify-between gap-4">
+            <div className="grow">
               <div className="flex flex-col items-center justify-between mb-2">
                 <h3 className="text-lg text-slate-800">{form.title}</h3>
               </div>
-              <p className="line-clamp-3 text-sm">{form.description}</p>
+              <p className="line-clamp-3 text-sm text-slate-500">{form.description}</p>
             </div>
 
             <div className="flex flex-wrap gap-3 items-center justify-center">
