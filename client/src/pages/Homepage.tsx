@@ -1,29 +1,11 @@
 import LinkBtn from "../components/LinkBtn";
 import ActionBtn from "../components/ActionBtn";
-import {
-  useGetFormsQuery,
-  useDeleteFormMutation,
-} from "../features/forms/formsApi";
-import { toast } from "sonner";
+import { useGetFormsQuery } from "../features/forms/formsApi";
+import { useDeleteFormAction } from "../features/forms/useDeleteFormActions";
 
 export default function Homepage() {
   const { data: forms = [], isLoading = true, error } = useGetFormsQuery();
-  const [deleteForm, { isLoading: isDeleting }] = useDeleteFormMutation();
-
-  const handleDelete = async (id: string, title: string) => {
-    const confirm = window.confirm(
-      `Are you sure you want to delete the form "${title}"?`,
-    );
-
-    if (!confirm) return;
-
-    try {
-      await deleteForm(id).unwrap();
-    } catch (err) {
-      toast.error("Failed to delete the form.");
-      console.error(err);
-    }
-  };
+  const { handleDelete, isDeleting } = useDeleteFormAction();
 
   if (isLoading) {
     return (
