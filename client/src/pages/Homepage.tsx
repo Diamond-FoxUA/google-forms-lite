@@ -9,9 +9,7 @@ export default function Homepage() {
 
   if (isLoading) {
     return (
-      <div className="text-center py-[25dvh]">
-        <h2 className="text-5xl font-medium">Loading...</h2>
-      </div>
+      <div className="mx-auto bg-violet-600 p-6 w-6 mt-[30dvh] rounded-4xl animate-pulse"></div>
     );
   }
 
@@ -54,7 +52,7 @@ export default function Homepage() {
 
       <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {forms.map((form) => (
-          <li key={form.id} className="bg-slate-100 p-6 rounded-xl space-y-8">
+          <li key={form.id} className="bg-slate-100 p-6 rounded-xl flex flex-col justify-between gap-4">
             <div>
               <div className="flex flex-col items-center justify-between mb-2">
                 <h3 className="text-lg text-slate-800">{form.title}</h3>

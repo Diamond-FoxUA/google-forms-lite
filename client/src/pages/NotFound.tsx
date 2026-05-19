@@ -12,7 +12,7 @@ export default function NotFound() {
         <p className="text-sm text-slate-600">
           Oops.. that page can't be found.
         </p>
-        <LinkBtn to="/">Go to Homepage</LinkBtn>
+        <LinkBtn to="/">Back to Dashboard</LinkBtn>
       </div>
     </div>
   );
