@@ -10,7 +10,7 @@ export default function Homepage() {
   if (isLoading) {
     return (
       <div className="text-center py-[25dvh]">
-        <h2 className="text-5xl font-semibold">Loading...</h2>
+        <h2 className="text-5xl font-medium">Loading...</h2>
       </div>
     );
   }
@@ -18,7 +18,7 @@ export default function Homepage() {
   if (error) {
     return (
       <div className="text-center pt-[25dvh]">
-        <h2 className="text-2xl text-semibold text-rose-600">
+        <h2 className="text-2xl font-semibold text-rose-600">
           Server Connection Failed
         </h2>
         <p className="text-slate-500 text-sm mt-1">
@@ -31,7 +31,7 @@ export default function Homepage() {
   if (forms.length === 0) {
     return (
       <div className="text-center mt-[25dvh]">
-        <h2 className="text-3xl text-bold text-slate-800">
+        <h2 className="text-3xl font-medium text-slate-800">
           No forms available
         </h2>
         <p className="text-slate-500 text-sm mt-1 mb-6">
@@ -46,7 +46,7 @@ export default function Homepage() {
     <div className="space-y-8">
       <div className="flex flex-col items-center gap-5 max-w-2xl mx-auto bg-slate-100 rounded-xl p-8">
         <div>
-          <h1 className="text-center text-semibold text-2xl">Dashboard</h1>
+          <h1 className="text-center font-medium text-2xl">Dashboard</h1>
           <p className="text-sm">Manage and review responses for your forms.</p>
         </div>
         <LinkBtn to="/forms/new">+ Create Form</LinkBtn>
