@@ -58,9 +58,6 @@ export default function Homepage() {
             <div>
               <div className="flex flex-col items-center justify-between mb-2">
                 <h3 className="text-lg text-slate-800">{form.title}</h3>
-                <span className="text-sm text-slate-800 self-start">
-                  {form.questions?.length || 0} Questions
-                </span>
               </div>
               <p className="line-clamp-3 text-sm">{form.description}</p>
             </div>

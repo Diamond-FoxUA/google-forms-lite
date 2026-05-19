@@ -13,7 +13,7 @@ export default function LinkBtn({
   ...props
 }: LinkButtonProps) {
   const baseStyles =
-    "text-sm w-full lg:w-fit max-w-lg  font-medium px-4 py-2 inline-flex items-center justify-center transition-all hover:scale-105 active:scale-95 hover:shadow-md duration-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2";
+    "text-sm w-full md:w-fit max-w-lg  font-medium px-4 py-2 inline-flex items-center justify-center transition-all hover:scale-105 active:scale-95 hover:shadow-md duration-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2";
 
   const variants = {
     primary: "text-white bg-violet-600 hover:bg-violet-700 focus:ring-violet-500",

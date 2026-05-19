@@ -2,9 +2,10 @@ export type QuestionType = "TEXT" | "MULTIPLE_CHOICE" | "CHECKBOX" | "DATE";
 
 export interface Question {
   id: string;
-  title: string;
+  text: string;
   required: boolean;
   options?: string[];
+  type: QuestionType;
 }
 
 export interface Form {
