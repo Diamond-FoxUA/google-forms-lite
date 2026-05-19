@@ -6,7 +6,6 @@ import "dotenv/config";
 import { errorHandler } from "./middleware/errorHandler.js";
 import { notFoundHandler } from "./middleware/notFoundHandler.js";
 import { formRouter } from "./routes/formRoutes.js";
-import { responseRouter } from "./routes/responseRouter.js";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -30,7 +29,6 @@ app.use(
 );
 
 app.use("/api/forms", formRouter);
-app.use("/api/responses", responseRouter);
 
 app.use(notFoundHandler);
 app.use(errorHandler);
