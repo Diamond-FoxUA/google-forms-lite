@@ -15,7 +15,7 @@ export default function ActionBtn({
   ...props
 }: ActionBtnProps) {
   const baseStyles =
-    "inline-flex w-full md:w-fit items-center justify-center font-medium rounded-lg text-sm transition-all duration-200 ease-out cursor-pointer shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2";
+    "inline-flex w-full max-w-md md:w-fit items-center justify-center font-medium rounded-lg text-sm transition-all duration-200 ease-out cursor-pointer shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2";
 
   const interactiveStyles =
     !disabled && !isLoading

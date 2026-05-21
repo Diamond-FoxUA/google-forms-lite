@@ -116,7 +116,7 @@ export default function FormResponses() {
                     {form.questions.map((q) => {
                       const answerObj = Array.isArray(resp.answers)
                         ? resp.answers.find(
-                            (a: SingleAnswerPayload) => a.question_id === q.id,
+                            (a: SingleAnswerPayload) => a.questionId === q.id,
                           )
                         : null;
 

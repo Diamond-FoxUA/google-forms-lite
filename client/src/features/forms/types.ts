@@ -15,6 +15,11 @@ export interface Form {
   questions: Question[];
 }
 
+export interface SingleAnswerPayload {
+  questionId: string;
+  value: string;
+}
+
 export interface ResponsePayload {
   formId: string;
   answers: Record<string, string | string[] | number>;

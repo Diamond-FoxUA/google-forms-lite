@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useFormikContext } from 'formik';
+import { toast } from 'sonner';
 
 export const ScrollToFieldError: React.FC = () => {
   const { isSubmitting, isValidating, errors } = useFormikContext();
@@ -7,6 +8,9 @@ export const ScrollToFieldError: React.FC = () => {
   useEffect(() => {
     if (isSubmitting && !isValidating && Object.keys(errors).length > 0) {
       const firstErrorKey = Object.keys(errors)[0];
+      
+      toast.error('Please fix the validation errors before saving.');
+
       const errorElement = document.getElementsByName(firstErrorKey)[0];
 
       if (errorElement) {
@@ -18,3 +22,4 @@ export const ScrollToFieldError: React.FC = () => {
 
   return null;
 };
+

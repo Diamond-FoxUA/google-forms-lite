@@ -5,7 +5,8 @@ import { useDeleteFormAction } from "../features/forms/useDeleteFormActions";
 
 export default function Homepage() {
   const { data: forms = [], isLoading = true, error } = useGetFormsQuery();
-  const { handleDelete, isDeleting } = useDeleteFormAction();
+  const { handleDelete, isDeleting, deleteModalElement } =
+    useDeleteFormAction();
 
   if (isLoading) {
     return (
@@ -58,7 +59,12 @@ export default function Homepage() {
           >
             <div className="grow">
               <div className="flex flex-col items-center justify-between mb-2">
-                <h3 title={form.title} className="w-full max-w-full truncate block text-lg text-slate-800">{form.title}</h3>
+                <h3
+                  title={form.title}
+                  className="w-full max-w-full truncate block text-lg text-slate-800"
+                >
+                  {form.title}
+                </h3>
               </div>
               <p className="line-clamp-3 text-sm text-slate-500">
                 {form.description || "No custom description provided."}
@@ -81,6 +87,8 @@ export default function Homepage() {
           </li>
         ))}
       </ul>
+
+      {deleteModalElement}
     </div>
   );
 }

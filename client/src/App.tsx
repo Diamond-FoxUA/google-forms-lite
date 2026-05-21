@@ -7,6 +7,7 @@ import FormFiller from "./pages/FormFiller";
 import FormResponses from "./pages/FormResponses";
 import NotFound from "./pages/NotFound";
 
+import { Toaster } from "sonner";
 
 const router = createBrowserRouter([
   {
@@ -24,7 +25,10 @@ const router = createBrowserRouter([
 
 function App() {
   return (
+    <>
       <RouterProvider router={router} />
+      <Toaster richColors position="top-center"></Toaster>
+    </>
   );
 }
 

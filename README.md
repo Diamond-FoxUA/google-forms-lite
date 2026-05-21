@@ -1,8 +1,9 @@
 # Google Forms Lite
 
-A simplified Google Forms clone featuring a dynamic form builder, live form filler, and response management dashboard. The project is structured as a full-stack JavaScript monorepo.
+A simplified Google Forms clone featuring a dynamic form builder, live form filler, and response management dashboard. The project is structured as a full-stack TypeScript monorepo.
 
 ## 🚀 Live Demo
+
 - **Deployed App:** 🚧 under development
 - **API Endpoint:** 🚧 under development
 
@@ -11,8 +12,7 @@ A simplified Google Forms clone featuring a dynamic form builder, live form fill
 ## 🛠️ Tech Stack
 
 - **Front-End:** React 18, TypeScript, Redux Toolkit (RTK Query), Formik + Yup (Validation), Sonner (Toasts), Tailwind CSS
-- **Back-End:** Node.js, Express, TypeScript, PostgreSQL (`pg` pool), Helmet (Security Headers). CORS (Cross-Origin Resource Sharing), http-errors (Error Handling), Dotenv (Environment Management)
-
+- **Back-End:** Node.js, Express, TypeScript, Prisma ORM, PostgreSQL, Helmet (Security Headers), CORS, http-errors, Dotenv
 - **Architecture:** Monorepo using `npm workspaces`
 
 ---
@@ -32,36 +32,51 @@ google-forms-lite/
 ## 💻 Local Setup & Installation
 
 ### Prerequisites
+
 - Node.js (v18 or higher)
-- PostgreSQL instance running locally or on a cloud provider (Neon/Supabase)
+- PostgreSQL instance running locally or via a cloud provider (Neon/Supabase)
 
 ### 1. Clone the Repository
+
 ```bash
 git clone https://github.com/Diamond-FoxUA/google-forms-lite.git
 cd google-forms-lite
 ```
 
 ### 2. Configure Environment Variables
+
 Create a `.env` file inside the `server` directory:
+
 ```env
 PORT=5000
-DATABASE_URL= 🚧 under development
+DATABASE_URL="postgresql://username:password@localhost:5432/google_forms_lite?schema=public"
 ```
 
 ### 3. Install Dependencies
-Run the installation command in the **root** directory to install all packages for both client and server:
+
+Run the installation command in the **root** directory to install all npm packages for both client and server:
+
 ```bash
 npm install
 ```
 
-### 4. Initialize Database
-Execute the SQL commands found in `server/schema.sql` (or see database design documentation below) to create the required tables and enums.
+### 4. Initialize Database & Run Migrations
+
+Generate the client artifacts and execute database schema migrations using Prisma:
+
+```bash
+npm run db:generate
+npm run db:migrate
+```
 
 ### 5. Run the Application
-Start both the React development server and Express API concurrently with a single command:
+
+Start both the React development server and Express API concurrently with a single command from the root directory:
+
 ```bash
 npm run dev
 ```
+
 - Client will be available at: `http://localhost:5173`
 - Server API will be available at: `http://localhost:5000`
 
@@ -69,13 +84,15 @@ npm run dev
 
 ## 🗄️ Database Schema
 
-The relational database architecture is built with cascading deletes to ensure data integrity:
+The relational database architecture is built with Prisma ORM using cascading deletes to ensure data integrity:
+
 - **Forms:** Stores `id`, `title`, `description`, `created_at`.
-- **Questions:** Stores form fields with types (`TEXT`, `MULTIPLE_CHOICE`, `CHECKBOX`, `DATE`) and serialized JSON options.
+- **Questions:** Stores form fields with types (`TEXT`, `MULTIPLE_CHOICE`, `CHECKBOX`, `DATE`) and structured JSON options.
 - **Responses:** Tracks individual form submission sessions.
-- **Answers:** Stores user inputs linked to questions using relational tables.
+- **Answers:** Stores user inputs linked to questions using relational tables with `JsonB` support.
 
 ---
 
 ## 📜 License
+
 This project is licensed under the MIT License.

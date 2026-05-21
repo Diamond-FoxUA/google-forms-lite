@@ -11,6 +11,20 @@ export const formBuilderSchema = Yup.object().shape({
     "Description cannot exceed 500 characters.",
   ),
   questions: Yup.array()
+    .of(
+      Yup.object().shape({
+        id: Yup.string().required(),
+        type: Yup.string().required(),
+        text: Yup.string()
+          .trim()
+          .required("Please provide a title prompt for this question block."),
+        options: Yup.array()
+          .of(
+            Yup.string().trim().required("Option field cannot be left blank."),
+          )
+          .optional(),
+      }),
+    )
     .min(
       1,
       "Your form must contain at least one question block before it can be created.",
@@ -23,17 +37,14 @@ export const buildDynamicFillerSchema = (form: Form) => {
 
   form.questions.forEach((q) => {
     if (q.type === "CHECKBOX") {
-      const baseArray = Yup.array().of(Yup.string().defined());
-      schemaFields[q.id] = q.required
-        ? baseArray.min(1, "Please tick at least one checkbox choice.")
-        : baseArray;
+      schemaFields[q.id] = Yup.array()
+        .of(Yup.string().defined())
+        .min(1, "Please tick at least one checkbox choice.")
+        .required("Please tick at least one checkbox choice.");
     } else {
-      const baseString = Yup.string();
-      schemaFields[q.id] = q.required
-        ? baseString.required(
-            "This field is mandatory and cannot be left blank.",
-          )
-        : baseString;
+      schemaFields[q.id] = Yup.string()
+        .trim()
+        .required("This field is mandatory and cannot be left blank.");
     }
   });
 

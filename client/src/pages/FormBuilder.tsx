@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useCreateFormMutation } from "../features/forms/formsApi";
-import { Formik, Form, Field, FieldArray } from "formik";
+import { Formik, Form, Field, FieldArray, getIn } from "formik";
 import { toast } from "sonner";
 
 import ActionBtn from "../components/ActionBtn";
@@ -26,19 +26,6 @@ export default function FormBuilder() {
   };
 
   const handleSaveForm = async (values: FormValues) => {
-    if (values.questions.length === 0) {
-      toast.warning("Please add at least one question block before saving.");
-      return;
-    }
-
-    const hasEmptyQuestion = values.questions.some((q) => !q.text.trim());
-    if (hasEmptyQuestion) {
-      toast.warning(
-        "Please provide a title prompt for all added question blocks.",
-      );
-      return;
-    }
-
     try {
       await createForm({
         title: values.title.trim(),
@@ -116,113 +103,130 @@ export default function FormBuilder() {
               {({ push, remove }) => (
                 <div className="space-y-10">
                   <ul className="space-y-10">
-                    {values.questions.map((q, qIdx) => (
-                      <li key={q.id || qIdx}>
-                        <div className="flex flex-col sm:flex-row gap-3 justify-between items-start">
-                          <div className="flex-1 flex flex-col gap-2 w-full">
-                            <label className="font-medium text-slate-500 uppercase">
-                              Question {qIdx + 1}
-                            </label>
-                            <Field
-                              name={`questions.${qIdx}.text`}
-                              type="text"
-                              placeholder="State the prompt title explicitly here..."
-                              className="w-full px-3 py-2 bg-slate-50 border-2 border-slate-200 rounded-xl focus:outline-none focus:bg-white focus:ring-2 focus:ring-violet-500 transition-all"
-                            />
-                          </div>
-                          <span className="text-sm font-semibold px-2.5 py-1 bg-violet-50 text-violet-700 rounded-md">
-                            {q.type.replace("_", " ")}
-                          </span>
-                        </div>
+                    {values.questions.map((q, qIdx) => {
+                      const questionFieldName = `questions.${qIdx}.text`;
+                      const questionError = getIn(errors, questionFieldName);
+                      const questionTouched = getIn(touched, questionFieldName);
 
-                        {["MULTIPLE_CHOICE", "CHECKBOX"].includes(q.type) &&
-                          q.options && (
-                            <div className="space-y-2 border-l-2 border-slate-100 pl-4 ml-1 mt-2">
-                              <label className="text-xs font-bold text-slate-400 block mb-1">
-                                Answer Fields
+                      return (
+                        <li key={q.id || qIdx}>
+                          <div className="flex flex-col sm:flex-row gap-3 justify-between items-start">
+                            <div className="flex-1 flex flex-col gap-2 w-full">
+                              <label className="font-medium text-slate-500 uppercase">
+                                Question {qIdx + 1}
                               </label>
-                              {q.options.map((option, optIdx) => (
-                                <div
-                                  key={optIdx}
-                                  className="flex items-center gap-2"
-                                >
-                                  <div
-                                    className={`h-4 w-4 shrink-0 border border-slate-300 ${
-                                      q.type === "MULTIPLE_CHOICE"
-                                        ? "rounded-full"
-                                        : "rounded-sm"
-                                    } bg-slate-50`}
-                                  />
-                                  <input
-                                    type="text"
-                                    value={option}
-                                    onChange={(e) => {
-                                      const updatedOptions = [...q.options!];
-                                      updatedOptions[optIdx] = e.target.value;
-                                      setFieldValue(
-                                        `questions.${qIdx}.options`,
-                                        updatedOptions,
-                                      );
-                                    }}
-                                    className="flex-1 max-w-md px-2 py-1 border-b border-transparent hover:border-gray-200 focus:border-violet-500 focus:outline-none text-sm font-medium transition-all"
-                                  />
-                                  {q.options!.length > 1 && (
-                                    <button
-                                      type="button"
-                                      onClick={() => {
-                                        const updatedOptions = [...q.options!];
-                                        updatedOptions.splice(optIdx, 1);
-                                        setFieldValue(
-                                          `questions.${qIdx}.options`,
-                                          updatedOptions,
-                                        );
-                                      }}
-                                      className="text-slate-400 hover:text-rose-500 text-xs p-1 cursor-pointer transition-colors"
-                                    >
-                                      ✕
-                                    </button>
-                                  )}
-                                </div>
-                              ))}
-                              <ActionBtn
-                                type="button"
-                                onClick={() =>
-                                  setFieldValue(`questions.${qIdx}.options`, [
-                                    ...q.options!,
-                                    `Option ${q.options!.length + 1}`,
-                                  ])
-                                }
-                              >
-                                + Add New Option
-                              </ActionBtn>
+                              <Field
+                                id={questionFieldName}
+                                name={questionFieldName}
+                                type="text"
+                                placeholder="State the prompt title explicitly here..."
+                                className={`w-full px-3 py-2 bg-slate-50 border-2 ${
+                                  questionError && questionTouched
+                                    ? "border-rose-300 ring-1 ring-rose-100"
+                                    : "border-slate-200"
+                                } rounded-xl focus:outline-none focus:bg-white focus:ring-2 focus:ring-violet-500 transition-all`}
+                              />
+                              {questionError && questionTouched && (
+                                <p className="text-sm text-rose-500 mt-1">
+                                  {questionError}
+                                </p>
+                              )}
                             </div>
-                          )}
+                            <span className="text-sm font-semibold px-2.5 py-1 bg-violet-50 text-violet-700 rounded-md">
+                              {q.type.replace("_", " ")}
+                            </span>
+                          </div>
 
-                        <div className="flex items-center justify-between border-b-2 pb-6 border-slate-100 pt-4 mt-4">
-                          <label className="inline-flex items-center gap-4 cursor-pointer text-sm font-medium text-slate-600 select-none">
-                            <input
-                              type="checkbox"
-                              checked={q.required}
-                              onChange={() =>
-                                setFieldValue(
-                                  `questions.${qIdx}.required`,
-                                  !q.required,
-                                )
-                              }
-                              className="h-4 w-4 text-violet-600 border-slate-300 rounded-sm focus:ring-violet-500 cursor-pointer"
-                            />
-                            Required Response Field
-                          </label>
-                          <ActionBtn
-                            type="button"
-                            variant="danger"
-                            onClick={() => remove(qIdx)}
-                          >
-                            Remove Card Block
-                          </ActionBtn>
-                        </div>
-                      </li>
-                    ))}
+                          {["MULTIPLE_CHOICE", "CHECKBOX"].includes(q.type) &&
+                            q.options && (
+                              <div className="space-y-2 border-l-2 border-slate-100 pl-4 ml-1 mt-2">
+                                <label className="text-xs font-bold text-slate-400 block mb-1">
+                                  Answer Fields
+                                </label>
+                                {q.options.map((_, optIdx) => {
+                                  const optionFieldName = `questions.${qIdx}.options.${optIdx}`;
+                                  const optionError = getIn(
+                                    errors,
+                                    optionFieldName,
+                                  );
+                                  const optionTouched = getIn(
+                                    touched,
+                                    optionFieldName,
+                                  );
+
+                                  return (
+                                    <div key={optIdx} className="space-y-1">
+                                      <div className="flex items-center gap-2">
+                                        <div
+                                          className={`h-4 w-4 shrink-0 border border-slate-300 ${
+                                            q.type === "MULTIPLE_CHOICE"
+                                              ? "rounded-full"
+                                              : "rounded-sm"
+                                          } bg-slate-50`}
+                                        />
+                                        <Field
+                                          id={optionFieldName}
+                                          name={optionFieldName}
+                                          type="text"
+                                          className={`flex-1 max-w-md px-2 py-1 border-b ${
+                                            optionError && optionTouched
+                                              ? "border-rose-400 focus:border-rose-500"
+                                              : "border-transparent hover:border-gray-200 focus:border-violet-500"
+                                          } focus:outline-none text-sm font-medium transition-all bg-transparent`}
+                                        />
+                                        {q.options!.length > 1 && (
+                                          <button
+                                            type="button"
+                                            onClick={() => {
+                                              const updatedOptions = [
+                                                ...q.options!,
+                                              ];
+                                              updatedOptions.splice(optIdx, 1);
+                                              setFieldValue(
+                                                `questions.${qIdx}.options`,
+                                                updatedOptions,
+                                              );
+                                            }}
+                                            className="text-slate-400 hover:text-rose-500 text-xs p-1 cursor-pointer transition-colors"
+                                          >
+                                            ✕
+                                          </button>
+                                        )}
+                                      </div>
+                                      {optionError && optionTouched && (
+                                        <p className="text-xs text-rose-500 pl-6">
+                                          {optionError}
+                                        </p>
+                                      )}
+                                    </div>
+                                  );
+                                })}
+                                <ActionBtn
+                                  type="button"
+                                  onClick={() =>
+                                    setFieldValue(`questions.${qIdx}.options`, [
+                                      ...q.options!,
+                                      `Option ${q.options!.length + 1}`,
+                                    ])
+                                  }
+                                >
+                                  + Add New Option
+                                </ActionBtn>
+                              </div>
+                            )}
+
+                          <div className="flex items-center justify-end border-b-2 pb-6 border-slate-100 pt-4 mt-4">
+                            <ActionBtn
+                              type="button"
+                              variant="danger"
+                              onClick={() => remove(qIdx)}
+                            >
+                              Remove Card Block
+                            </ActionBtn>
+                          </div>
+                        </li>
+                      );
+                    })}
                   </ul>
 
                   <div className="bg-slate-50 border-2 border-slate-200 rounded-2xl p-5 shadow-xs space-y-3">
@@ -237,7 +241,6 @@ export default function FormBuilder() {
                             id: crypto.randomUUID(),
                             type: "TEXT",
                             text: "",
-                            required: false,
                             options: [],
                           })
                         }
@@ -252,7 +255,6 @@ export default function FormBuilder() {
                             id: crypto.randomUUID(),
                             type: "MULTIPLE_CHOICE",
                             text: "",
-                            required: false,
                             options: ["Option 1", "Option 2"],
                           })
                         }
@@ -267,7 +269,6 @@ export default function FormBuilder() {
                             id: crypto.randomUUID(),
                             type: "CHECKBOX",
                             text: "",
-                            required: false,
                             options: ["Option 1", "Option 2"],
                           })
                         }
@@ -282,7 +283,6 @@ export default function FormBuilder() {
                             id: crypto.randomUUID(),
                             type: "DATE",
                             text: "",
-                            required: false,
                             options: [],
                           })
                         }
