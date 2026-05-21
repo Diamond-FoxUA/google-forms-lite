@@ -39,11 +39,7 @@ export default function FormFiller() {
 
   if (isFormLoading) {
     return (
-      <div className="flex justify-center items-center h-40">
-        <p className="text-slate-500 font-medium animate-pulse">
-          Loading form details...
-        </p>
-      </div>
+      <div className="mx-auto bg-violet-600 p-6 w-6 mt-[30dvh] rounded-4xl animate-pulse"></div>
     );
   }
 
@@ -153,7 +149,7 @@ export default function FormFiller() {
                         id={q.id}
                         name={q.id}
                         type="date"
-                        className="w-full max-w-xs px-4 py-2.5 bg-white border-2 border-slate-200 rounded-xl font-medium focus:outline-none focus:ring-2 focus:ring-violet-500 transition-all text-slate-700"
+                        className="w-full max-w-xs px-4 py-2.5 bg-white border-2 border-slate-200 rounded-xl font-medium focus:outline-none focus:ring-2 focus:ring-violet-500 transition-all text-slate-700 cursor-pointer"
                       />
                     )}
 
