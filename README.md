@@ -10,7 +10,7 @@ A simplified Google Forms clone featuring a dynamic form builder, live form fill
 
 ## 🛠️ Tech Stack
 
-- **Front-End:** React 18, TypeScript, Redux Toolkit (RTK Query), Formik + Yup (Validation), Sonner (Toasts), Tailwind CSS
+- **Front-End:** React, TypeScript, Redux Toolkit (RTK Query), Formik + Yup (Validation), Sonner (Toasts), Tailwind CSS
 - **Back-End:** Node.js, Express, TypeScript, Prisma ORM, PostgreSQL, Helmet (Security Headers), CORS, http-errors, Dotenv
 - **Architecture:** Monorepo using `npm workspaces`
 
